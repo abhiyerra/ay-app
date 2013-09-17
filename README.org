@@ -1,0 +1,12 @@
+#+TITLE: ay-site
+
+ay-site is the Emacs script that powers [[http://abhiyerra.com][this site]]. Yes, this site is
+running right now on Emacs. Pretty cool isn't it? Or if your a Vim
+user you are likely disgusted by the very fact that this can even
+exist.
+
+It uses an Emacs plugin called [[https://github.com/nicferrier/elnode][elnode]] and many of the pages are
+written using org-mode. I just wasn't happy with any other [[http://orgmode.org][org-mode]]
+library so I decided to just host it on Emacs. Any information I
+gather is made readily available to you as soon as I have it since I
+use org-mode as my day to day task manager.
