@@ -1,0 +1,90 @@
+#+TITLE: ay-site
+#+OPTIONS: num:nil toc:nil
+#+INCLUDE: ../pages/_header.html html
+
+* README
+
+ay-site is the Emacs script that powers [[http://abhiyerra.com][this site]]. Yes, this site is
+running right now on Emacs. Pretty cool isn't it? Or if your a Vim
+user you are likely disgusted by the very fact that this can even
+exist.
+
+It uses an Emacs plugin called [[https://github.com/nicferrier/elnode][elnode]] and many of the pages are
+written using org-mode. I just wasn't happy with any other [[http://orgmode.org][org-mode]]
+library so I decided to just host it on Emacs. Any information I
+gather is made readily available to you as soon as I have it since I
+use org-mode as my day to day task manager.
+
+* Program
+** ay-site.el
+#+BEGIN_SRC elisp :results none
+
+(require 'elnode)
+
+(setq ay-server-directory (concat default-directory ".."))
+
+(defun ay-blog-handler (httpcon)
+  "Handler for render the blog file."
+  "")
+
+(defun ay-feedback-handler (httpcon)
+  "Receive feedback from the user on any part of the site that
+might need updated and store it to a file feedback.org which can
+be acted on."
+    "hello")
+
+(defun ay-handler (httpcon)
+  (elnode-docroot-for ay-server-directory
+      with org-file
+      on httpcon
+      do (cond ((string= (elnode-http-pathinfo httpcon) "/feedback")
+                (elnode-send-html httpcon (ay-feedback-handler httpconn)))
+               ((string= (elnode-http-pathinfo httpcon) "/")
+                (with-current-buffer (find-file-noselect (concat org-file "/index.html"))
+                  (elnode-send-html httpcon (buffer-string))))
+               ;((string= (file-name-extension org-file) "rb")
+               ; (with-current-buffer (find-file-noselect org-file)
+               ;   (elnode-send-html httpcon (buffer-string))))
+               ((string= (file-name-extension org-file) "html")
+                (with-current-buffer (find-file-noselect org-file)
+                  (elnode-send-html httpcon (buffer-string))))
+               ((string= (file-name-extension org-file) "org")
+                (with-current-buffer (find-file-noselect org-file)
+                  (let ((org-html (org-export-as-html 3 nil nil 'string)))
+                    (elnode-send-html httpcon org-html))))
+               (t
+                (elnode-send-file httpcon org-file)))))
+
+(defun ay-site-start ()
+  (elnode-stop 8010)
+  (elnode-start 'ay-handler :port 8010))
+
+(ay-site-start)
+#+END_SRC
+
+#+RESULTS:
+| (8010 . *elnode-webserver-proc*<1>) | (8000 . *elnode-webserver-proc*) |
+
+** nginx config
+
+This is the simple nginx configuration to add caching and proxying to
+the Emacs instance.
+
+#+BEGIN_SRC conf
+server {
+     server_name abhiyerra.com;
+
+     location / {
+         expires 10m;
+         proxy_pass http://127.0.0.1:8010;
+         proxy_store /tmp/abhiyerra${uri};
+         proxy_store_access   user:rw  group:rw  all:r;
+         proxy_cache_valid  200 302 304 10m;
+         proxy_cache_valid  301 1h;
+         proxy_cache_valid  any 1m;
+     }
+}
+#+END_SRC
+
+
+#+INCLUDE: ../_disqus.html html
