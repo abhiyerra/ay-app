@@ -1,7 +1,11 @@
+(add-to-list 'load-path "/ay-site/org-mode/lisp")
+(add-to-list 'load-path "/ay-site/org-mode/contrib/lisp")
+(add-to-list 'load-path "/ay-site/elnode")
 
+(require 'org)
 (require 'elnode)
 
-(setq ay-server-directory (concat default-directory ".."))
+(setq ay-server-directory "/ay-site/website")
 
 (defun ay-blog-handler (httpcon)
   "Handler for render the blog file."
