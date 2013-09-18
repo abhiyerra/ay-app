@@ -1,1 +1,5 @@
 #!/bin/bash
+
+# start with the config
+# stop the app
+# restart the app
