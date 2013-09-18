@@ -1,6 +1,6 @@
-#+TITLE: ay-site
+#+TITLE: ay-app
 
-ay-site is the Emacs script that powers [[http://abhiyerra.com][abhiyerra.com]]. It uses the
+ay-app is the Emacs script that powers [[http://abhiyerra.com][abhiyerra.com]]. It uses the
 Emacs plugin [[https://github.com/nicferrier/elnode][elnode]] and largely served with org-mode.
 
 This repo includes a docker script to setup an environment to install

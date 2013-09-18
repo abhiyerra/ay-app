@@ -1,11 +1,11 @@
-(add-to-list 'load-path "/ay-site/org-mode/lisp")
-(add-to-list 'load-path "/ay-site/org-mode/contrib/lisp")
-(add-to-list 'load-path "/ay-site/elnode")
+(add-to-list 'load-path "/ay-app/org-mode/lisp")
+(add-to-list 'load-path "/ay-app/org-mode/contrib/lisp")
+(add-to-list 'load-path "/ay-app/elnode")
 
 (require 'org)
 (require 'elnode)
 
-(setq ay-server-directory "/ay-site/website")
+(setq ay-server-directory "/ay-app/website")
 
 (defun ay-blog-handler (httpcon)
   "Handler for render the blog file."
@@ -39,8 +39,8 @@ be acted on."
                                (t
                                 (elnode-send-file httpcon org-file)))))
 
-(defun ay-site-start ()
+(defun ay-app-start ()
   (elnode-stop 8010)
   (elnode-start 'ay-handler :port 8010))
 
-(ay-site-start)
+(ay-app-start)
