@@ -1,5 +1,7 @@
 #!/bin/bash
 
 # start with the config
+# sudo docker build .
+
 # stop the app
 # restart the app

@@ -1,16 +1,18 @@
-FROM ubuntu/latest
+FROM boxcar/raring
 
 RUN apt-get update
-RUN apt-get install emacs24-nox
-RUN apt-get install git
+RUN apt-get install -y emacs24-nox git
 
-RUN mkdir /ay-app
+RUN mkdir /webapp
+RUN echo "hi" > /webapp/index.html
+
+ADD . /ay-app
 
 WORKDIR /ay-app
 
-RUN git clone git://orgmode.org/org-mode.git
-RUN git clone git@github.com:nicferrier/elnode.git
+EXPOSE 8010:8010
 
-EXPOSE 8080
+CMD ["-nw", "--batch", "-l", "/ay-app/ay-app.el"]
+ENTRYPOINT ["/usr/bin/emacs"]
 
-# ENTRYPOINT emacs --batch foo.c -l hack-c -f save-buffer >& log
+# /usr/bin/emacs -nw --daemon -q -l ay-app.el
